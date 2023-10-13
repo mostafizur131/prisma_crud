@@ -12,17 +12,9 @@ ALTER TABLE `post` MODIFY `createdAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTA
     MODIFY `publishedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(3);
 
 -- CreateTable
-CREATE TABLE `post_tag` (
-    `postId` INTEGER NOT NULL,
-    `tagId` INTEGER NOT NULL,
-
-    UNIQUE INDEX `post_tag_postId_key`(`postId`),
-    UNIQUE INDEX `post_tag_tagId_key`(`tagId`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `tag` (
+CREATE TABLE `category` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `parentId` BIGINT NULL,
     `title` VARCHAR(75) NOT NULL,
     `metaTitle` VARCHAR(100) NOT NULL,
     `slug` VARCHAR(100) NOT NULL,
@@ -30,9 +22,3 @@ CREATE TABLE `tag` (
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- AddForeignKey
-ALTER TABLE `post_tag` ADD CONSTRAINT `post_tag_postId_fkey` FOREIGN KEY (`postId`) REFERENCES `post`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `post_tag` ADD CONSTRAINT `post_tag_tagId_fkey` FOREIGN KEY (`tagId`) REFERENCES `tag`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

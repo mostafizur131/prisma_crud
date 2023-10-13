@@ -1,0 +1,17 @@
+-- CreateTable
+CREATE TABLE `post` (
+    `id` BIGINT NOT NULL AUTO_INCREMENT,
+    `authorId` BIGINT NULL,
+    `parentId` BIGINT NULL,
+    `title` VARCHAR(75) NOT NULL,
+    `metaTitle` VARCHAR(100) NOT NULL,
+    `slug` VARCHAR(100) NOT NULL,
+    `summary` TINYTEXT NOT NULL,
+    `published` TINYINT UNSIGNED NOT NULL,
+    `createdAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `publishedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `content` TEXT NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

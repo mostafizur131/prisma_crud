@@ -12,7 +12,7 @@ datasource db {
 
 
 model user{
-  id Int @id @default(autoincrement())
+  id BigInt @id @default(autoincrement())
   firstName String @db.VarChar(50)
   middleName String @db.VarChar(50)
   lastName String @db.VarChar(50)
@@ -27,10 +27,11 @@ model user{
   post post[]
 }
 
+
 model post {
-  id Int @id @default(autoincrement()) 
-  authorId Int @unique
-  parentId Int @unique
+  id BigInt @id @default(autoincrement()) 
+  authorId BigInt @unique
+  parentId BigInt?
   title String @db.VarChar(75) 
   metaTitle String @db.VarChar(100)
   slug String @db.VarChar(100)
@@ -45,15 +46,16 @@ model post {
   post_comment post_comment[]
   post_tag post_tag[]
   post_category post_category[]
-  post_meta post_meta[]
+   post_meta post_meta[]
 
   user user @relation(fields: [authorId], references: [id], onDelete: Restrict, onUpdate: Cascade)
 }
 
+
 model post_comment {
-  id Int @id @default(autoincrement())
-  postId Int @unique
-  parentId Int @unique
+  id BigInt @id @default(autoincrement())
+  postId BigInt @unique
+  parentId BigInt?
   title String @db.VarChar(100)
   published Int @db.UnsignedTinyInt
   createdAt DateTime @default(now()) @db.Timestamp(0)
@@ -63,33 +65,8 @@ model post_comment {
   post post @relation(fields: [postId], references: [id], onDelete: Restrict, onUpdate: Cascade)
 }
 
-model post_tag {
-  postId Int @unique
-  tagId Int @unique
-
-  post post @relation(fields: [postId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  tag tag @relation(fields: [tagId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-}
-
-model post_category {
-  postId Int @unique
-  categoryId Int @unique
-
-  post post @relation(fields: [postId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  category category @relation(fields: [categoryId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-}
-
-model post_meta {
-  id Int @id @default(autoincrement()) 
-  postId Int @unique
-  key String @db.VarChar(50)
-  content String @db.Text
-
-  post post @relation(fields: [postId], references: [id], onDelete: Restrict, onUpdate:Cascade)
-}
-
 model tag {
-  id Int @id @default(autoincrement()) 
+  id BigInt @id @default(autoincrement()) 
   title String @db.VarChar(75) 
   metaTitle String @db.VarChar(100)
   slug String @db.VarChar(100)
@@ -98,13 +75,42 @@ model tag {
   post_tag post_tag[]
 }
 
+model post_tag {
+  postId BigInt @unique
+  tagId BigInt @unique
+
+  post post @relation(fields: [postId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+   tag tag @relation(fields: [tagId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+}
+
+
+model post_meta {
+  id BigInt @id @default(autoincrement()) 
+  postId BigInt @unique
+  key String @db.VarChar(50)
+  content String @db.Text
+
+  post post @relation(fields: [postId], references: [id], onDelete: Restrict, onUpdate:Cascade)
+}
+
+
+
 model category{
-  id Int @id @default(autoincrement()) 
-  parentId Int @unique
+  id BigInt @id @default(autoincrement()) 
+  parentId BigInt?
   title String @db.VarChar(75) 
   metaTitle String @db.VarChar(100)
   slug String @db.VarChar(100)
   content String @db.Text
  
  post_category post_category[]
+}
+
+
+model post_category {
+  postId BigInt @unique
+  categoryId BigInt @unique
+
+  post post @relation(fields: [postId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  category category @relation(fields: [categoryId], references: [id], onDelete: Restrict, onUpdate: Cascade)
 }
